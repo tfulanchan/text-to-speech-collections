@@ -4,10 +4,14 @@ An attempt to implement Text-to-Speech.
 
 ## References
 
-[gazdagergo]([https://github.com/gazdagergo/text-to-speech](https://github.com/gazdagergo/text-to-speech)) to learn more.
+[gazdagergo](https://github.com/gazdagergo/text-to-speech) to learn more.
 
 
-[yaswanthteja]([https://dev.to/yaswanthteja/text-to-speech-converter-in-html-css-javascript-3eme](https://dev.to/yaswanthteja/text-to-speech-converter-in-html-css-javascript-3eme)) to learn more.
+[yaswanthteja](https://dev.to/yaswanthteja/text-to-speech-converter-in-html-css-javascript-3eme) to learn more.
+
+
+[MDN](https://mdn.github.io/dom-examples/web-speech-api/speak-easy-synthesis/)
+
 
 ## Recommended IDE Setup
 
