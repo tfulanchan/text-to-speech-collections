@@ -1,74 +1,120 @@
-<script setup>
-import { ref } from 'vue'
-const message = ref('')
+<script>
+import { defineComponent, ref } from 'vue'
 
+//   const voicees = () => {
+//     for(let voice of synth.getVoices()){
+//         let selected = voice.name === "Google US English" ? "selected" : "";
+//         console.log(selected)
+//     }
+// }
+// voicees();
+// speechBtn.addEventListener("click", e => {
+//   e.preventDefault();
+//   if (textarea.value !== "") {
+//     if (!synth.speaking) {
+//       textToSpeech(textarea.value);
+//     }
+//     if (textarea.value.length > 80) {
+//       setInterval(() => {
+//         if (!synth.speaking && !isSpeaking) {
+//           isSpeaking = true;
+//           speechBtn.innerText = "Convert To Speech";
+//         } else {
+//         }
+//       }, 500);
+//       if (isSpeaking) {
+//         synth.resume();
+//         isSpeaking = false;
+//         speechBtn.innerText = "Pause Speech";
+//       } else {
+//         synth.pause();
+//         isSpeaking = true;
+//         speechBtn.innerText = "Resume Speech";
+//       }
+//     } else {
+//       speechBtn.innerText = "Convert To Speech";
+//     }
+//   }
+// });
 function populateVoiceList() {
   if (typeof speechSynthesis === "undefined") {
     return;
   }
-
   const voices = speechSynthesis.getVoices();
-
   for (let i = 0; i < voices.length; i++) {
     const option = document.createElement("option");
     option.textContent = `${voices[i].name} (${voices[i].lang})`;
-
     if (voices[i].default) {
       option.textContent += " — DEFAULT";
     }
-
     option.setAttribute("data-lang", voices[i].lang);
     option.setAttribute("data-name", voices[i].name);
     document.getElementById("voiceSelect").appendChild(option);
   }
 }
-
 populateVoiceList();
 if (
   typeof speechSynthesis !== "undefined" &&
   speechSynthesis.onvoiceschanged !== undefined
 ) {
   speechSynthesis.onvoiceschanged = populateVoiceList;
+  console.log(speechSynthesis)
 }
-// inputForm.onsubmit = (event) => {
-//   event.preventDefault();
+export default defineComponent({
+  name: 'HelloWorld',
+  setup() {
+    // const voices = speechSynthesis.getVoices();
+    let synth = speechSynthesis;
+    const voices = speechSynthesis.getVoices();
+    const submit = (event) => {
+      event.preventDefault();
+      const utterThis = new SpeechSynthesisUtterance(message.value);
+      const selectedOption =
+        voiceSelect.selectedOptions[0].getAttribute("data-name");
+      utterThis.lang = 'en'
+      //  console.log(voices)
+      console.log(voiceSelect.selectedOptions[0].getAttribute("data-lang"))
+      console.log(voices, 'voices')
+      console.log(voiceSelect.selectedOptions[0], 'voiceSelect')
+      console.log(utterThis, 'utterThis')
+      console.log(utterThis.lang, 'utterThis.lang')
+      console.log(synth, 'synth')
+      synth.speak(utterThis);
+      // message.blur();
+    };
+    const message = ref('')
+    // message.blur();
+    return {
+      message,
+      submit,
+      // voices,
+      synth,
+      voices
+    }
+  }
+})
 
-//   const utterThis = new SpeechSynthesisUtterance(inputTxt.value);
-//   const selectedOption =
-//     voiceSelect.selectedOptions[0].getAttribute("data-name");
-//   for (let i = 0; i < voices.length; i++) {
-//     if (voices[i].name === selectedOption) {
-//       utterThis.voice = voices[i];
-//     }
-//   }
-//   synth.speak(utterThis);
-//   inputTxt.blur();
-// };
-const form = document.getElementById("myForm");
-
-console.log(speechSynthesis)
 </script>
 
 <template>
-<body>
-  <div class="wrapper">
-    <header>Text To Speech</header>
-    <form id="myForm" action="#">
-      <div class="row">
-        <p>Message is: {{ message }}</p>
-        <textarea v-model="message"></textarea>
-      </div>
-      <div class="row">
-        <label>Select Voice</label>
-        <div class="outer">
-          <select id="voiceSelect"></select>
+  <body>
+    <div class="wrapper">
+      <header>Text To Speech</header>
+      <form id="myForm" action="#">
+        <div class="row">
+          <p>Message is: {{ message }}</p>
+          <textarea v-model="message"></textarea>
         </div>
-      </div>
-      <input type="submit" value="Submit">
-      <button type="submit" value="Submit">Convert To Speech</button>
-    </form>
-  </div>
-</body>
+        <div class="row">
+          <label>Select Voice</label>
+          <div class="outer">
+            <select id="voiceSelect"></select>
+          </div>
+        </div>
+        <button type="submit" @click="submit">Convert To Speech</button>
+      </form>
+    </div>
+  </body>
 </template>
 
 <style scoped>
@@ -87,7 +133,7 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #5256AD;
+  background: #0a52a4;
 }
 
 ::selection {
