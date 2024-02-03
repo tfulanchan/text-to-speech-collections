@@ -8,33 +8,10 @@ import { defineComponent, ref } from 'vue'
 //     }
 // }
 // voicees();
+// let speechBtn = document.getElementById("Btn");
 // speechBtn.addEventListener("click", e => {
 //   e.preventDefault();
-//   if (textarea.value !== "") {
-//     if (!synth.speaking) {
-//       textToSpeech(textarea.value);
-//     }
-//     if (textarea.value.length > 80) {
-//       setInterval(() => {
-//         if (!synth.speaking && !isSpeaking) {
-//           isSpeaking = true;
-//           speechBtn.innerText = "Convert To Speech";
-//         } else {
-//         }
-//       }, 500);
-//       if (isSpeaking) {
-//         synth.resume();
-//         isSpeaking = false;
-//         speechBtn.innerText = "Pause Speech";
-//       } else {
-//         synth.pause();
-//         isSpeaking = true;
-//         speechBtn.innerText = "Resume Speech";
-//       }
-//     } else {
-//       speechBtn.innerText = "Convert To Speech";
-//     }
-//   }
+
 // });
 function populateVoiceList() {
   if (typeof speechSynthesis === "undefined") {
@@ -49,6 +26,7 @@ function populateVoiceList() {
     // }
     option.setAttribute("data-lang", voices[i].lang);
     option.setAttribute("data-name", voices[i].name);
+    // console.log(option.textContent)
     document.getElementById("voiceSelect").appendChild(option);
   }
 }
@@ -58,12 +36,10 @@ if (
   speechSynthesis.onvoiceschanged !== undefined
 ) {
   speechSynthesis.onvoiceschanged = populateVoiceList;
-  console.log(speechSynthesis)
 }
 export default defineComponent({
   name: 'HelloWorld',
   setup() {
-    // const voices = speechSynthesis.getVoices();
     let synth = speechSynthesis;
     const voices = speechSynthesis.getVoices();
     const submit = (event) => {
@@ -71,25 +47,51 @@ export default defineComponent({
       const utterThis = new SpeechSynthesisUtterance(message.value);
       const selectedOption =
         voiceSelect.selectedOptions[0].getAttribute("data-name");
-      utterThis.lang = 'en'
       //  console.log(voices)
       console.log(voiceSelect.selectedOptions[0].getAttribute("data-lang"))
       console.log(voices, 'voices')
       console.log(voiceSelect.selectedOptions[0], 'voiceSelect')
-      console.log(utterThis, 'utterThis')
-      console.log(utterThis.lang, 'utterThis.lang')
-      console.log(synth, 'synth')
+      console.log(utterThis, 'utterThis.lang')
+      console.log(synth.speaking, 'synth')
+      console.log(message._value.length, '      message._value.length a')
       synth.speak(utterThis);
-      // message.blur();
     };
+    const decision = () => {
+      if (message._value !== "") {
+        if (!synth.speaking) {
+          synth.speak(utterThis);
+        }
+        if (message._value.length > 80) {
+          setInterval(() => {
+            if (!synth.speaking && !isSpeaking) {
+              isSpeaking = true;
+              display = "Convert To Speech";
+            } else {
+            }
+          }, 500);
+          if (isSpeaking) {
+            synth.resume();
+            isSpeaking = false;
+            display = "Pause Speech";
+          } else {
+            synth.pause();
+            isSpeaking = true;
+            display = "Resume Speech";
+          }
+        } else {
+          display = "Convert To Speech";
+        }
+      }
+    }
     const message = ref('')
-    // message.blur();
+    let display = ref('Convert To Speech')
     return {
       message,
       submit,
       // voices,
       synth,
-      voices
+      voices,
+      display
     }
   }
 })
@@ -111,7 +113,7 @@ export default defineComponent({
             <select id="voiceSelect"></select>
           </div>
         </div>
-        <button type="submit" @click="submit">Convert To Speech</button>
+        <button id="Btn" type="submit" @click="submit">{{ display }}</button>
       </form>
     </div>
   </body>
