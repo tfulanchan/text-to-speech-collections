@@ -24,17 +24,21 @@ export default defineComponent({
             // console.log(message._value.length, '      message._value.length a')
             synth.speak(utterThis);
         };
-        // const pause = () => {
-        //     window.speechSynthesis.pause();
-        // }
+        const pause = (event) => {
+            window.speechSynthesis.pause();
+            // const char = event.utterThis.text.charAt(event.charIndex);
+            // console.log(
+            //     `Speech paused at character ${event.charIndex} of "${event.utterance.text}", which is "${char}".`,
+            // );
+        }
 
-        // const cancel = () => {
-        //     window.speechSynthesis.cancel();
-        // }
+        const cancel = () => {
+            window.speechSynthesis.cancel();
+        }
 
-        // const resume = () =>  {
-        //     window.speechSynthesis.resume();
-        // }
+        const resume = () => {
+            window.speechSynthesis.resume();
+        }
         const message = ref('')
 
         const list = ref([1, 2, 3])
@@ -44,9 +48,9 @@ export default defineComponent({
             submit,
             synth,
             voices,
-            // pause,
-            // cancel,
-            // resume,
+            pause,
+            cancel,
+            resume,
         }
     }
 })
@@ -72,10 +76,10 @@ export default defineComponent({
                         </select>
                     </div>
                 </div>
-                <button type="submit" @click="submit">Convert To Speech</button>
-                <!-- <button @click="pause">Fucking</button>
-                <button @click="cancel">bitch</button>
-                <button @click="resume">fucking linda</button> -->
+                <button @click="submit">listen</button>
+                <button @click="pause">pause</button>
+                <button @click="resume">resume</button>
+                <button @click="cancel">cancel</button>
             </form>
         </div>
     </body>
@@ -138,7 +142,8 @@ form .row:nth-child(2) label {
     font-size: 17px;
 }
 
-form :where(textarea, select, button) {
+/* , button */
+form :where(textarea, select) {
     outline: none;
     width: 100%;
     height: 100%;
@@ -169,6 +174,7 @@ form .row .outer {
 }
 
 form .row select {
+    text-align: center;
     font-size: 14px;
     background: none;
 }
@@ -189,16 +195,20 @@ form .row select::-webkit-scrollbar-thumb {
 
 form button {
     height: 52px;
+    width: 25%;
     color: #fff;
     font-size: 17px;
     cursor: pointer;
     margin-top: 10px;
-    background: #675AFE;
+    background: #4b2e83;
     transition: 0.3s ease;
+    cursor: pointer;
+    outline: none;
+    border: solid 1px rgba(255, 255, 255, 1);
 }
 
 form button:hover {
-    background: #4534fe;
+    background: #636363;
 }
 
 @media(max-width: 400px) {

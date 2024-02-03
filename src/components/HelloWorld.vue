@@ -27,7 +27,7 @@ function populateVoiceList() {
     option.setAttribute("data-lang", voices[i].lang);
     option.setAttribute("data-name", voices[i].name);
     // console.log(option.textContent)
-    document.getElementById("voiceSelect").appendChild(option);
+    // document.getElementById("voiceSelect").appendChild(option);
   }
 }
 populateVoiceList();
