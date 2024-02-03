@@ -23,15 +23,16 @@ import { useSpeechSynthesis } from '@vueuse/core';
 
 export default defineComponent({
     setup() {
-        const { isSupported, speak, stop, voiceInfo } = useSpeechSynthesis();
+        const { isSupported, speak, stop, utterance } = useSpeechSynthesis();
         const message = ref('');
         const voiceSelect = ref(null);
         const isSpeaking = ref(false);
 
         onMounted(() => {
+            console.log(useSpeechSynthesis(), ' useSpeechSynthesis() ')
             if (isSupported.value) {
                 // Populate the voice list
-                const voices = voiceInfo.value;
+                const voices = utterance.value;
                 voiceSelect.value.innerHTML = '';
                 for (let voice of voices) {
                     let selected = voice.name === "Google US English" ? "selected" : "";
