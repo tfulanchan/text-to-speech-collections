@@ -2,38 +2,46 @@
 import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
-  name: failure,
+  name: 'failure',
   setup() {
     let synth = speechSynthesis;
     const voices = speechSynthesis.getVoices();
     const content = ref('The charIndex read-only property of the SpeechSynthesisUtterance interface returns the index position of the character in SpeechSynthesisUtterance.text that was being spoken when the event was triggered.')
-    const pause = (event) => {
-      const char = event.utterThis.text.charAt(event.charIndex);
-      console.log(
-        `Speech paused at character ${event.charIndex} of "${event.utterThis.text}", which is "${char}".`,
-      );
-    };
-    const read = (event) => {
-      event.preventDefault();
-      const utterThis = new SpeechSynthesisUtterance(content.value);
-      utterThis.pitch = 1;
-      synth.speak(utterThis);
+    const utterThis = new SpeechSynthesisUtterance(content.value);
+    // const pause = (event) => {
+    //   const char = event.utterThis.text.charAt(event.charIndex);
+    //   console.log(
+    //     `Speech paused at character ${event.charIndex} of "${event.utterThis.text}", which is "${char}".`,
+    //   );
+    // };
+    // const read = (event) => {
+    //   event.preventDefault();
+    //   const utterThis = new SpeechSynthesisUtterance(content.value);
+    //   utterThis.pitch = 1;
+    //   synth.speak(utterThis);
+    // }
+    const bound = () => {
+ 
     }
     return {
       synth,
       voices,
       content,
-      read,
-      pause
+      // read,
+      // pause
+      bound,
+      utterThis
     }
   }
 })
 
 </script>
 <template>
-  <p>{{ content }}</p>
-  <button @click="read">hello</button>
-  <button @click="pause">pause</button>
+  <div class="wrapper">
+    <p>{{ content }}</p>
+    <button @click="bound">hello</button>
+    <button @click="pause">pause</button>
+  </div>
 </template>
 
 <style scoped>

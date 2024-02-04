@@ -6,9 +6,23 @@ export default defineComponent({
     setup() {
         let synth = speechSynthesis;
         const voices = speechSynthesis.getVoices();
+
+
         const submit = (event) => {
             event.preventDefault();
             const utterThis = new SpeechSynthesisUtterance(message.value);
+            utterThis.addEventListener("start", (event) => {
+                console.log(`We have started uttering this speech: ${event.utterance.text}`);
+                const char = event.utterance.text.charAt(event.charIndex);
+                console.log(
+                    `Speech paused at character ${event.charIndex} of "${event.utterance.text}", which is "${char}".`,
+                );
+            });
+            utterThis.addEventListener("end", (event) => {
+                console.log(
+                    `Utterance has finished being spoken after ${event.elapsedTime} seconds.`,
+                );
+            });
             // utterThis.lang = 'zh-CN';
             const voices = window.speechSynthesis.getVoices();
             // utterThis.voice = voices.find(voice => voice.name === `${selected.selectedOptions[0].textContent}`);
@@ -23,6 +37,9 @@ export default defineComponent({
             // console.log(utterThis, 'utterThis')
             // console.log(message._value.length, '      message._value.length a')
             synth.speak(utterThis);
+            console.log(utterThis, ' onboundary')
+            console.log(utterThis, ' utterThis')
+            console.log(window.speechSynthesis, ' speechSynthesis')
         };
         const pause = (event) => {
             window.speechSynthesis.pause();
@@ -30,14 +47,17 @@ export default defineComponent({
             // console.log(
             //     `Speech paused at character ${event.charIndex} of "${event.utterance.text}", which is "${char}".`,
             // );
+            // console.log(window.speechSynthesis)
         }
 
         const cancel = () => {
             window.speechSynthesis.cancel();
+            // console.log(window.speechSynthesis)
         }
 
         const resume = () => {
             window.speechSynthesis.resume();
+            // console.log(window.speechSynthesis)
         }
         const message = ref('')
 
@@ -60,7 +80,7 @@ export default defineComponent({
 <template>
     <body>
         <div class="wrapper">
-            <header>Text To Speech</header>
+            <header>Text-to-Speech</header>
             <form id="myForm" action="#">
                 <div class="row">
                     <p>Message is: {{ message }}</p>
