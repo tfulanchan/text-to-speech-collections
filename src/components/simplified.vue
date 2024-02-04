@@ -6,13 +6,11 @@ export default defineComponent({
     setup() {
         let synth = speechSynthesis;
         const voices = speechSynthesis.getVoices();
-
-
         const submit = (event) => {
             event.preventDefault();
             const utterThis = new SpeechSynthesisUtterance(message.value);
-            const splited = content.textContent.split('')
-            console.log("splited ", splited)        
+            const splited = content.value.split('')
+            console.log("splited ", splited[3])
             utterThis.addEventListener("start", (event) => {
                 content.style.color = "red"
                 const char = event.utterance.text.charAt(event.charIndex);
@@ -22,28 +20,25 @@ export default defineComponent({
                 console.log("char ", char)
             });
             utterThis.addEventListener("end", (event) => {
-                const target = event.utterance.text.charAt(2).style;
                 console.log("event.elapsedTime ", event.elapsedTime)
-                console.log(target)
                 content.style.color = "black"
             });
             // utterThis.lang = 'zh-CN';
             const voices = window.speechSynthesis.getVoices();
             // utterThis.voice = voices.find(voice => voice.name === `${selected.selectedOptions[0].textContent}`);
             let selectedOption = selected.selectedOptions[0];
+            // get language with data-lang attribute
             let attributeValue = selectedOption.getAttribute("data-lang");
             utterThis.voice = voices.find(voice => voice.lang === `${attributeValue}`);
             // utterThis.voice = 'Google 普通话（中国大陆）';
             utterThis.pitch = 1;
             // console.log(voices, 'getVoices()')
             // console.log(selectedOption, ' selectedOption ')
-            console.log(attributeValue, ' selected.selectedOptions[0] ');
             // console.log(utterThis, 'utterThis')
             // console.log(message._value.length, '      message._value.length a')
             synth.speak(utterThis);
-            console.log(selectedOption, ' selectedOption')
             console.log(utterThis, ' utterThis')
-            console.log(window.speechSynthesis, ' speechSynthesis')            
+            console.log(window.speechSynthesis, ' speechSynthesis')
         };
         const pause = (event) => {
             window.speechSynthesis.pause();
@@ -81,6 +76,7 @@ export default defineComponent({
     <body>
         <div class="wrapper">
             <header>有意思</header>
+            <p>一二三四五六七八九十</p>
             <form id="myForm" action="#">
                 <div class="row">
                     <p>Message is: {{ message }}</p>
@@ -140,6 +136,10 @@ body {
 .wrapper header {
     font-size: 28px;
     font-weight: 500;
+    text-align: center;
+}
+
+.wrapper p {
     text-align: center;
 }
 
