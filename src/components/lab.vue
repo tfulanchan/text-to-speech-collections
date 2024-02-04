@@ -10,10 +10,14 @@ export default defineComponent({
       { id: 3, title: 'Why Vue is so fun' }
     ])
         const items = [1, 2, 3, 4, , 5]
+        const list = ref([1, 2, 3])
+        const itemRefs = ref([])
         return {
             populateVoiceList,
             items,
-            posts
+            posts,
+            list,
+            itemRefs
         }
     }
 })

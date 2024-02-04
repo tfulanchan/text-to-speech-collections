@@ -11,17 +11,21 @@ export default defineComponent({
         const submit = (event) => {
             event.preventDefault();
             const utterThis = new SpeechSynthesisUtterance(message.value);
+            const splited = content.textContent.split('')
+            console.log("splited ", splited)        
             utterThis.addEventListener("start", (event) => {
-                console.log(`We have started uttering this speech: ${event.utterance.text}`);
+                content.style.color = "red"
                 const char = event.utterance.text.charAt(event.charIndex);
-                console.log(
-                    `Speech paused at character ${event.charIndex} of "${event.utterance.text}", which is "${char}".`,
-                );
+                console.log("event.elapsedTime ", event.elapsedTime)
+                console.log("event.charIndex ", event.charIndex)
+                console.log("event.utterance.text ", event.utterance.text)
+                console.log("char ", char)
             });
             utterThis.addEventListener("end", (event) => {
-                console.log(
-                    `Utterance has finished being spoken after ${event.elapsedTime} seconds.`,
-                );
+                const target = event.utterance.text.charAt(2).style;
+                console.log("event.elapsedTime ", event.elapsedTime)
+                console.log(target)
+                content.style.color = "black"
             });
             // utterThis.lang = 'zh-CN';
             const voices = window.speechSynthesis.getVoices();
@@ -37,9 +41,9 @@ export default defineComponent({
             // console.log(utterThis, 'utterThis')
             // console.log(message._value.length, '      message._value.length a')
             synth.speak(utterThis);
-            console.log(utterThis, ' onboundary')
+            console.log(selectedOption, ' selectedOption')
             console.log(utterThis, ' utterThis')
-            console.log(window.speechSynthesis, ' speechSynthesis')
+            console.log(window.speechSynthesis, ' speechSynthesis')            
         };
         const pause = (event) => {
             window.speechSynthesis.pause();
@@ -49,20 +53,16 @@ export default defineComponent({
             // );
             // console.log(window.speechSynthesis)
         }
-
         const cancel = () => {
             window.speechSynthesis.cancel();
             // console.log(window.speechSynthesis)
         }
-
         const resume = () => {
             window.speechSynthesis.resume();
             // console.log(window.speechSynthesis)
         }
         const message = ref('')
 
-        const list = ref([1, 2, 3])
-        const itemRefs = ref([])
         return {
             message,
             submit,
@@ -80,11 +80,11 @@ export default defineComponent({
 <template>
     <body>
         <div class="wrapper">
-            <header>Text-to-Speech</header>
+            <header>有意思</header>
             <form id="myForm" action="#">
                 <div class="row">
                     <p>Message is: {{ message }}</p>
-                    <textarea v-model="message"></textarea>
+                    <textarea v-model="message" id="content"></textarea>
                 </div>
                 <div class="row">
                     <label>Select Voice</label>
